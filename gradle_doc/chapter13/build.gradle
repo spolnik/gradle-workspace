@@ -1,0 +1,44 @@
+println project.name
+
+println name
+println path
+println description
+println projectDir
+println buildDir
+println group
+println version
+println ant
+
+def dest = "dest"
+
+task copy() {
+    println "source"
+    println dest
+}
+
+apply plugin: "java"
+
+ext {
+    springVersion = "3.1.0.RELEASE"
+    emailNotification = "build@master.org"
+}
+
+sourceSets.all { ext.purpose = null }
+
+sourceSets {
+    main {
+        purpose = "production"
+    }
+    test {
+        purpose = "test"
+    }
+    plugin {
+        purpose = "production"
+    }
+}
+
+task printProperties << {
+    println springVersion
+    println emailNotification
+    sourceSets.matching { it.purpose == "production" }.each { println it.name }
+}
